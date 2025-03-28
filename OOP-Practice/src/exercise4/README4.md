@@ -19,9 +19,9 @@
    - ці фабрики створюють об'єкти відповідних класів (TrianglePerimeterResult, RectanglePerimeterResult, BinaryOnesResult).
 
 2. Перевизначення (Overriding)
-   - метод displayAsTable() перевизначено в класах-нащадках (TrianglePerimeterResult, RectanglePerimeterResult, BinaryOnesResult).
-   - метод display() також перевизначено для виводу різних типів результатів.
-   Поліморфізм (dynamic method dispatch) використано список об'єктів DisplayableResult, де методи викликаються динамічно:
+   - метод displayAsTable() перевизначено в класах-нащадках (TrianglePerimeterResult, RectanglePerimeterResult, BinaryOnesResult);
+   - метод display() також перевизначено для виводу різних типів результатів;
+   Поліморфізм (dynamic method dispatch) використано список об'єктів DisplayableResult, де методи викликаються динамічно.
 
 3. Програма використовує Scanner для отримання вхідних даних від користувача.
 
