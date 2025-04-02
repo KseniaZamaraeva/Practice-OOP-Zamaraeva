@@ -1,71 +1,56 @@
 package exercise6;
-
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
-
 interface Task {
     void execute();
     void undo();
 }
-
 interface Displayable {
     void display();
 }
-
 class ComputationResult implements Displayable {
     double value;
-
     public ComputationResult(double value) {
         this.value = value;
     }
-
     @Override
     public void display() {
         System.out.println("Результат: " + value);
     }
 }
-
 class Rectangle extends ComputationResult {
     double width, height;
-
     public Rectangle(double width, double height) {
         super(2 * (width + height));
         this.width = width;
         this.height = height;
     }
-
     @Override
     public void display() {
         System.out.printf("Прямокутник -> Периметр: %.2f\n", value);
     }
 }
-
 class IsoscelesTriangle extends ComputationResult {
     double base, side;
-
     public IsoscelesTriangle(double base, double side) {
         super(2 * side + base);
         this.base = base;
         this.side = side;
     }
-
     @Override
     public void display() {
         System.out.printf("Рівнобедрений трикутник -> Периметр: %.2f\n", value);
     }
 }
-
 class ResizeTask implements Task {
     private List<Displayable> results;
     private double factor;
     private List<Double> previousValues = new ArrayList<>();
-
     public ResizeTask(List<Displayable> results, double factor) {
         this.results = results;
         this.factor = factor;
     }
-
     @Override
     public void execute() {
         previousValues.clear();
@@ -76,7 +61,6 @@ class ResizeTask implements Task {
             }
         }
     }
-
     @Override
     public void undo() {
         for (int i = 0; i < results.size(); i++) {
@@ -86,7 +70,6 @@ class ResizeTask implements Task {
         }
     }
 }
-
 class ParallelProcessor {
     public static void process(List<ComputationResult> results) {
         OptionalDouble min = results.parallelStream().mapToDouble(r -> r.value).min();
@@ -95,21 +78,17 @@ class ParallelProcessor {
         List<ComputationResult> filtered = results.parallelStream()
                 .filter(r -> r.value > 10)
                 .collect(Collectors.toList());
-
         System.out.println("Мінімальне значення: " + min.orElse(Double.NaN));
         System.out.println("Максимальне значення: " + max.orElse(Double.NaN));
         System.out.println("Середнє значення: " + avg.orElse(Double.NaN));
         System.out.println("Фільтровані значення (більше 10): " + filtered.size());
     }
 }
-
 class WorkerThread implements Runnable {
     private BlockingQueue<Task> taskQueue;
-
     public WorkerThread(BlockingQueue<Task> taskQueue) {
         this.taskQueue = taskQueue;
     }
-
     @Override
     public void run() {
         try {
@@ -122,7 +101,6 @@ class WorkerThread implements Runnable {
         }
     }
 }
-
 public class main6 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -152,7 +130,6 @@ public class main6 {
                 System.out.println("Невірний вибір!");
             }
         }
-
         while (true) {
             System.out.println("\nОберіть дію:");
             System.out.println("1 - Масштабування");
@@ -161,7 +138,6 @@ public class main6 {
             System.out.println("4 - Вийти");
 
             int choice = scanner.nextInt();
-
             switch (choice) {
                 case 1:
                     System.out.print("Введіть коефіцієнт масштабування: ");

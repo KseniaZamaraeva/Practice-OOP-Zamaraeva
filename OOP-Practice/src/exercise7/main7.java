@@ -1,5 +1,4 @@
 package exercise7;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,40 +11,32 @@ import java.util.concurrent.LinkedBlockingQueue;
 interface ExecutableTask {
     void execute();
 }
-
 class ComputationData {
     protected double value;
-
     public ComputationData(double value) {
         this.value = value;
     }
-
     public double getValue() {
         return value;
     }
 }
-
 class RectangleShape extends ComputationData {
     public RectangleShape(double width, double height) {
         super(2 * (width + height));
     }
 }
-
 class TriangleShape extends ComputationData {
     public TriangleShape(double base, double side) {
         super(2 * side + base);
     }
 }
-
 class ScalingTask implements ExecutableTask {
     private List<ComputationData> results;
     private double factor;
-
     public ScalingTask(List<ComputationData> results, double factor) {
         this.results = results;
         this.factor = factor;
     }
-
     @Override
     public void execute() {
         for (ComputationData result : results) {
@@ -53,7 +44,6 @@ class ScalingTask implements ExecutableTask {
         }
     }
 }
-
 class DataProcessor {
     public static void process(List<ComputationData> results) {
         OptionalDouble min = results.stream().mapToDouble(ComputationData::getValue).min();
@@ -64,14 +54,11 @@ class DataProcessor {
                 "Максимальне: " + max.orElse(Double.NaN) + "\n" + "Середнє: " + avg.orElse(Double.NaN));
     }
 }
-
 class TaskWorker implements Runnable {
     private BlockingQueue<ExecutableTask> taskQueue;
-
     public TaskWorker(BlockingQueue<ExecutableTask> taskQueue) {
         this.taskQueue = taskQueue;
     }
-
     @Override
     public void run() {
         try {
@@ -95,7 +82,6 @@ public class main7 {
     private List<ComputationData> results = new ArrayList<>();
     private BlockingQueue<ExecutableTask> taskQueue = new LinkedBlockingQueue<>();
     private Thread worker;
-
     public main7() {
         frame = new JFrame("Індивідуальне завдання 'Обчислення периметрів фігур'");
         frame.setSize(600, 500);
@@ -108,7 +94,6 @@ public class main7 {
         outputArea = new JTextArea();
         outputArea.setEditable(false);
         frame.add(new JScrollPane(outputArea), BorderLayout.CENTER);
-
         // Фонова панель з градієнтом і текстовий заголовок
         JPanel visualPanel = new JPanel() {
             @Override
@@ -119,7 +104,6 @@ public class main7 {
                 GradientPaint gradient = new GradientPaint(0, 0, Color.CYAN, 600, 500, Color.ORANGE);
                 g2d.setPaint(gradient);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
-
                 g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("Arial", Font.BOLD, 24));
                 g2d.drawString("Практика з об'єктно-орієнтованого програмування", 30, 50);
@@ -162,38 +146,32 @@ public class main7 {
 
         frame.setVisible(true);
     }
-
     private void addRectangle(ActionEvent e) {
         double width = Double.parseDouble(JOptionPane.showInputDialog("Введіть ширину:"));
         double height = Double.parseDouble(JOptionPane.showInputDialog("Введіть висоту:"));
         results.add(new RectangleShape(width, height));
         outputArea.append("Додано прямокутник (" + width + " x " + height + ")\n");
     }
-
     private void addTriangle(ActionEvent e) {
         double base = Double.parseDouble(JOptionPane.showInputDialog("Введіть основу:"));
         double side = Double.parseDouble(JOptionPane.showInputDialog("Введіть сторону:"));
         results.add(new TriangleShape(base, side));
         outputArea.append("Додано трикутник (" + base + " x " + side + ")\n");
     }
-
     private void scaleShapes(ActionEvent e) {
         double factor = Double.parseDouble(JOptionPane.showInputDialog("Введіть коефіцієнт масштабування:"));
         taskQueue.add(new ScalingTask(new ArrayList<>(results), factor));
         outputArea.append("Здійснено масштабування з коефіцієнтом " + factor + "\n");
     }
-
     private void processResults(ActionEvent e) {
         DataProcessor.process(results);
     }
-
     private void displayResults(ActionEvent e) {
         outputArea.append("\nРезультати:\n");
         for (ComputationData result : results) {
             outputArea.append("- " + result.getValue() + "\n");
         }
     }
-
     // Метод для відображення інструкцій
     private void showInstructions(ActionEvent e) {
         String instructions = "Інструкція користувача:\n\n" +
@@ -206,7 +184,6 @@ public class main7 {
 
         JOptionPane.showMessageDialog(frame, instructions, "Інструкція", JOptionPane.INFORMATION_MESSAGE);
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(main7::new);
     }

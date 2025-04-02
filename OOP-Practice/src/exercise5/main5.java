@@ -1,79 +1,53 @@
 package exercise5;
-
 import java.util.*;
-
-/**
- * Інтерфейс для команд.
- */
+// Інтерфейс для команд.
 interface Command {
     void execute();
     void undo();
 }
-
-/**
- * Інтерфейс для відображення результатів.
- */
+// Інтерфейс для відображення результатів.
 interface DisplayableResult {
     void display();
 }
-
-/**
- * Базовий клас для результатів.
- */
+// Базовий клас для результатів.
 class BaseResult implements DisplayableResult {
     double value;
-
     public BaseResult(double value) {
         this.value = value;
     }
-
     @Override
     public void display() {
         System.out.println("Результат: " + value);
     }
 }
-
-/**
- * Клас для трикутника.
- */
+ // Клас для трикутника.
 class Triangle extends BaseResult {
     double a, b, c;
-
     public Triangle(double a, double b, double c) {
         super(a + b + c);
         this.a = a;
         this.b = b;
         this.c = c;
     }
-
     @Override
     public void display() {
         System.out.printf("Трикутник -> Периметр: %.2f\n", value);
     }
 }
-
-/**
- * Клас для прямокутника.
- */
+// Клас для прямокутника.
 class Rectangle extends BaseResult {
     double width, height;
-
     public Rectangle(double width, double height) {
         super(2 * (width + height));
         this.width = width;
         this.height = height;
     }
-
     @Override
     public void display() {
         System.out.printf("Прямокутник -> Периметр: %.2f\n", value);
     }
 }
-
-
-/**
- * Команда для масштабування.
- */
+ // Команда для масштабування.
 class ScaleCommand implements Command {
     private List<DisplayableResult> results;
     private double factor;
@@ -83,7 +57,6 @@ class ScaleCommand implements Command {
         this.results = results;
         this.factor = factor;
     }
-
     @Override
     public void execute() {
         previousValues.clear();
@@ -94,7 +67,6 @@ class ScaleCommand implements Command {
             }
         }
     }
-
     @Override
     public void undo() {
         for (int i = 0; i < results.size(); i++) {
@@ -104,26 +76,20 @@ class ScaleCommand implements Command {
         }
     }
 }
-
-/**
- * Команда для нормалізації.
- */
+ // Команда для нормалізації.
 class NormalizeCommand implements Command {
     private List<DisplayableResult> results;
     private List<Double> previousValues = new ArrayList<>();
     private double max;
-
     public NormalizeCommand(List<DisplayableResult> results) {
         this.results = results;
     }
-
     @Override
     public void execute() {
         max = results.stream()
                 .filter(r -> r instanceof BaseResult)
                 .mapToDouble(r -> ((BaseResult) r).value)
                 .max().orElse(1);
-
         previousValues.clear();
         for (DisplayableResult result : results) {
             if (result instanceof BaseResult) {
@@ -132,7 +98,6 @@ class NormalizeCommand implements Command {
             }
         }
     }
-
     @Override
     public void undo() {
         for (int i = 0; i < results.size(); i++) {
@@ -142,41 +107,30 @@ class NormalizeCommand implements Command {
         }
     }
 }
-
-/**
- * Команда для сортування.
- */
+// Команда для сортування.
 class SortCommand implements Command {
     private List<DisplayableResult> results;
     private List<DisplayableResult> previousState;
-
     public SortCommand(List<DisplayableResult> results) {
         this.results = results;
     }
-
     @Override
     public void execute() {
         previousState = new ArrayList<>(results);
         results.sort(Comparator.comparingDouble(r -> ((BaseResult) r).value));
     }
-
     @Override
     public void undo() {
         results.clear();
         results.addAll(previousState);
     }
 }
-
-/**
- * Головний клас програми.
- */
+// Головний клас програми.
 public class main5 {
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<DisplayableResult> results = new ArrayList<>();
         Menu menu = Menu.getInstance();
-
         // Введення фігур користувачем
         System.out.println("Введіть кількість фігур:");
         int numShapes = scanner.nextInt();
@@ -200,7 +154,6 @@ public class main5 {
                 System.out.println("Невірний тип фігури!");
             }
         }
-
         while (true) {
             System.out.println("\nОберіть дію:");
             System.out.println("1 - Масштабування");
@@ -210,7 +163,6 @@ public class main5 {
             System.out.println("5 - Вийти");
 
             int choice = scanner.nextInt();
-
             switch (choice) {
                 case 1:
                     System.out.print("Введіть коефіцієнт масштабування: ");
@@ -237,7 +189,6 @@ public class main5 {
             }
         }
     }
-
     public static void printResults(List<DisplayableResult> results) {
         System.out.println("\nПоточні результати:");
         for (DisplayableResult result : results) {
@@ -245,23 +196,17 @@ public class main5 {
         }
     }
 }
-
-/**
- * Меню для управління командами.
- */
+ // Меню для управління командами.
 class Menu {
     private static Menu instance;
     private Stack<Command> history = new Stack<>();
-
     private Menu() {}
-
     public static Menu getInstance() {
         if (instance == null) {
             instance = new Menu();
         }
         return instance;
     }
-
     public void executeCommand(Command command) {
         command.execute();
         history.push(command);

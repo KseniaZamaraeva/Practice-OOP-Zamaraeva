@@ -1,30 +1,23 @@
 package exercise2;
-
 import java.io.*;
 import java.util.Scanner;
-
 class Car implements Serializable {
     private String model;
     private int year;
     private transient String engineNumber; // Поле, яке не буде серіалізовано
-
     public Car(String model, int year, String engineNumber) {
         this.model = model;
         this.year = year;
         this.engineNumber = engineNumber;
     }
-
     @Override
     public String toString() {
         return "Car{model='" + model + "', year=" + year + ", engineNumber='" + engineNumber + "'}";
     }
 }
-
 public class mainEx3 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        // Введення даних автомобіля
         System.out.print("Введіть модель автомобіля: ");
         String model = scanner.nextLine();
 
@@ -34,9 +27,7 @@ public class mainEx3 {
 
         System.out.print("Введіть номер двигуна: ");
         String engineNumber = scanner.nextLine();
-
-        // Створення об'єкта Car з введеними даними
-        Car car = new Car(model, year, engineNumber);
+        Car car = new Car(model, year, engineNumber); // Створення об'єкта Car з введеними даними
 
         // Серіалізація
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("car.ser"))) {
@@ -45,9 +36,7 @@ public class mainEx3 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Виведення об'єкта перед відновленням
-        System.out.println("Автомобіль перед відновленням: " + car);
+        System.out.println("Автомобіль перед відновленням: " + car); // Виведення об'єкта перед відновленням
 
         // Відновлення
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("car.ser"))) {

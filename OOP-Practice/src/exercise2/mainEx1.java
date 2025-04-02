@@ -1,16 +1,11 @@
 package exercise2;
-
 import java.io.*;
 import java.util.*;
-
 public class mainEx1 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<String> argumentsList = new ArrayList<>();
-
-        // Введення даних з клавіатури
         System.out.println("Введіть аргументи (для завершення введення залиште порожній рядок):");
-
         while (true) {
             String input = scanner.nextLine();
             if (input.isEmpty()) {
@@ -18,7 +13,6 @@ public class mainEx1 {
             }
             argumentsList.add(input);
         }
-
         // Виведення введених даних
         System.out.println("Аргументи, введені з клавіатури:");
         if (argumentsList.isEmpty()) {
@@ -28,7 +22,6 @@ public class mainEx1 {
                 System.out.println("Аргумент " + (i + 1) + ": " + argumentsList.get(i));
             }
         }
-
         // Збереження результатів у файл
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("arguments.ser"))) {
             oos.writeObject(argumentsList);
@@ -36,7 +29,6 @@ public class mainEx1 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         // Відновлення результатів із файлу
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("arguments.ser"))) {
             List<String> restoredList = (List<String>) ois.readObject();
@@ -49,4 +41,5 @@ public class mainEx1 {
         }
     }
 }
+
 

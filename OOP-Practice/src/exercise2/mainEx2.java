@@ -1,13 +1,9 @@
 package exercise2;
-
 import java.util.*;
-
 public class mainEx2 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<String> arguments = new ArrayList<>();
-
-        // Введення даних з клавіатури
         System.out.println("Введіть аргументи (для завершення введення залиште порожній рядок):");
         while (true) {
             String input = scanner.nextLine();
@@ -16,7 +12,6 @@ public class mainEx2 {
             }
             arguments.add(input);
         }
-
         // Виведення введених даних
         System.out.println("Аргументи:");
         if (arguments.isEmpty()) {
@@ -26,7 +21,6 @@ public class mainEx2 {
                 System.out.println("Аргумент " + (i + 1) + ": " + arguments.get(i));
             }
         }
-
         // Обчислення суми числових аргументів
         int sum = 0;
         for (String arg : arguments) {
